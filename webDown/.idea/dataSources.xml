@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="jupyterhub" uuid="e2a7b9ff-d96e-416a-a892-0b0e9e81d7bf">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:D:\startest_sea_python\jupyterhub.sqlite</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="jupyterhub [2]" uuid="eb31e916-9a70-47cf-9495-466487d8b330">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:D:\webDown\jupyterhub.sqlite</jdbc-url>
+    </data-source>
+  </component>
+</project>
