@@ -30,6 +30,7 @@ class Config(object):
 class ProductConfig(Config):
     """生产模式配置信息"""
     DEBUG = False
+    CHROMEDRIVER = "F:/chromedriver_win32/chromedriver"
     # CACHE_TYPE = 'redis'  # 缓存到redis数据库
     # # CACHE_TYPE = 'simple'  #缓存到内存
     # CACHE_KEY_PREFIX = 'blog/'

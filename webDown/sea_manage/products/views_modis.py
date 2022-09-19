@@ -12,11 +12,10 @@ from ..untils.response_code import RET
 
 
 from selenium import webdriver
-chromedriver = "F:/chromedriver_win32/chromedriver"  # 驱动程序所在的位置
+# chromedriver = "F:/chromedriver_win32/chromedriver"  # 驱动程序所在的位置
 grib2 = "F:/grib2"
 # file = "D:\\Downloads\\gfs"
 #
-os.environ["webdriver.chrome.driver"] = chromedriver
 
 
 ns = api.namespace('modis', description='modis专题模块API')
@@ -157,6 +156,8 @@ class MetaInfo(Resource):
         #
         #     print(load)
         # return
+        os.environ["webdriver.chrome.driver"] = current_app.config['CHROMEDRIVER']
+
         chromeOptions = webdriver.ChromeOptions()
         # 设定下载文件的保存目录
         # 如果该目录不存在，将会自动创建
@@ -164,7 +165,7 @@ class MetaInfo(Resource):
         # 将自定义设置添加到Chrome配置对象实例中
         chromeOptions.add_experimental_option("prefs", prefs)
         # 启动带有自定义设置的Chrome浏览器
-        driver = webdriver.Chrome(chromedriver, \
+        driver = webdriver.Chrome(current_app.config['CHROMEDRIVER'], \
                                   chrome_options=chromeOptions)
         driver.maximize_window()  # 窗口最大化（无关紧要哈）
         driver.get(path[0])

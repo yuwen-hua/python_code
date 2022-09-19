@@ -1,15 +1,24 @@
 import os
 import time
+import json
 
 from selenium import webdriver
-chromedriver = "F:/chromedriver_win32/chromedriver"  # 驱动程序所在的位置
+
+# config = open('./config.txt','r')
+f=open('./config.txt', encoding='utf-8')
+txt=''
+for line in f:
+    txt = txt + line.strip()
+print(txt,type(txt))
+print(json.loads(txt),type(json.loads(txt)))
+config = json.loads(txt)
+chromedriver = config['chromedriver']
+# chromedriver = "F:/chromedriver_win32/chromedriver"  # 驱动程序所在的位置
 os.environ["webdriver.chrome.driver"] = chromedriver
 chromeOptions = webdriver.ChromeOptions()
 # 设定下载文件的保存目录
 # 如果该目录不存在，将会自动创建
 # data = input("please enter the data: ")
-data = '密度'
-print(data)
 down_path = ''
 prefs = {"download.default_directory": down_path}
 # 将自定义设置添加到Chrome配置对象实例中
@@ -19,18 +28,23 @@ driver = webdriver.Chrome(chromedriver, \
                           options=chromeOptions)
 driver.maximize_window()  # 窗口最大化（无关紧要哈）
 
-driver.get('http://114.242.60.27:6770/demo01/#/')
+
+# 登录
+driver.get(config['website'])
 username = driver.find_element_by_name("username")
-username.send_keys("admin")
+username.send_keys(config['username'])
 password = driver.find_element_by_name("password")
-password.send_keys("123456")
+password.send_keys(config['password'])
 time.sleep(1)
 submit = driver.find_element_by_xpath("//div[@class='el-form-item__content']/button[@class='el-button el-button--primary']")
 submit.click()
 
 time.sleep(3)
+
+
+# 查询数据
 dataset_name = driver.find_element_by_xpath("//div[@class='el-row dataSearchRowStyle'][1]/div[@class='el-col el-col-16']/div[@class='el-input el-input--mini']/div[@class='el-input__wrapper']/input")
-dataset_name.send_keys(data)
+dataset_name.send_keys(config['form'])
 search = driver.find_element_by_xpath("//div[@class='dataSearchRowStyle']/button[@class='el-button el-button--mini'][1]")
 search.click()
 time.sleep(1)
@@ -53,7 +67,9 @@ actions = webdriver.ActionChains(driver)
 actions.click_and_hold(canvas)
 time.sleep(3)
 print('yidong')
-actions.move_by_offset(-400,-300)
+# actions.move_by_offset(-400,-300)
+for i in range(1,60):
+    actions.move_by_offset(-10, -8)
 time.sleep(5)
 actions.click().release().perform()
 
@@ -64,3 +80,14 @@ time.sleep(5)
 lat = driver.find_element_by_xpath("//div[@id='btnLonLatDepthId']")
 lat.click()
 time.sleep(5)
+
+
+# 滚轮
+# test = driver.find_element_by_id("testone")
+# display_block = "document.getElementById(\"testone\").style.display='block';"
+# # 调用js脚本
+# driver.execute_script(display_block)
+# test.click()
+# display_none = "document.getElementById(\"testone\").style.display='none';"
+# driver.execute_script(display_none)
+

@@ -21,11 +21,11 @@ from ..untils.response_code import RET
 from sea_manage.models.model_measured import Profile
 
 from selenium import webdriver
-chromedriver = "F:/chromedriver_win32/chromedriver"  # 驱动程序所在的位置
+# chromedriver = "F:/chromedriver_win32/chromedriver"  # 驱动程序所在的位置
 grib2 = "F:/grib2"
 # file = "D:\\Downloads\\gfs"
 #
-os.environ["webdriver.chrome.driver"] = chromedriver
+
 
 
 ns = api.namespace('copernicus', description='哨兵2专题模块API')
@@ -130,71 +130,72 @@ class MetaInfo(Resource):
         return jsonify(errno=RET.OK, data=data, errmsg="查询成功")
         # downUrl = 'https://scihub.copernicus.eu/dhus/odata/v1/Products('fdc4c14e-201b-4c0c-b8f1-185a4fa49c19')/$value'
 
-    @ns.route('/down')
-    class MetaInfo(Resource):
-        @api.doc('获取哨兵1下载地址')
-        @ns.param('path', '下载地址')
-        @ns.param('name', '下载名称')
-        @ns.param('username', '用户名')
-        @ns.param('password', '密码')
-        def get(self):
-            """下载哨兵2"""
-            name = request.values.get('name').split(',')
-            path = request.values.get('path').split(',')
-            username = request.values.get('username')
-            password = request.values.get('password')
-            today = datetime.datetime.now().strftime('%Y\\%m\\%d')
-            t = round(time.time())
-            t_10 = str(t)
-            down_path = 'D:\\dataSource\\webDown\\' + today + '\\' + t_10
-            list = []
-            chromeOptions = webdriver.ChromeOptions()
-            # 设定下载文件的保存目录
-            # 如果该目录不存在，将会自动创建
-            prefs = {"profile.default_content_settings.popups": 0, "download.default_directory": down_path}
-            # 将自定义设置添加到Chrome配置对象实例中
-            chromeOptions.add_experimental_option("prefs", prefs)
-            # 启动带有自定义设置的Chrome浏览器
-            driver = webdriver.Chrome(chromedriver, \
-                                      chrome_options=chromeOptions)
-            driver.maximize_window()  # 窗口最大化（无关紧要哈）
-            # driver.get(path[0])
-            # print('开始')
-            # WebDriverWait(driver, 20).until(EC.alert_is_present())
-            # prompt = driver.switch_to.alert
-            # prompt.send_keys("大力水手吃菠菜")  # 这里输入框中看不到输入的文字
-            # time.sleep(2)
-            # prompt.accept()
-            driver.get('https://scihub.copernicus.eu/dhus/#/home')
+@ns.route('/down')
+class MetaInfo(Resource):
+    @api.doc('获取哨兵1下载地址')
+    @ns.param('path', '下载地址')
+    @ns.param('name', '下载名称')
+    @ns.param('username', '用户名')
+    @ns.param('password', '密码')
+    def get(self):
+        """下载哨兵2"""
+        name = request.values.get('name').split(',')
+        path = request.values.get('path').split(',')
+        username = request.values.get('username')
+        password = request.values.get('password')
+        today = datetime.datetime.now().strftime('%Y\\%m\\%d')
+        t = round(time.time())
+        t_10 = str(t)
+        down_path = 'D:\\dataSource\\webDown\\' + today + '\\' + t_10
+        list = []
+        os.environ["webdriver.chrome.driver"] = current_app.config['CHROMEDRIVER']
+        chromeOptions = webdriver.ChromeOptions()
+        # 设定下载文件的保存目录
+        # 如果该目录不存在，将会自动创建
+        prefs = {"profile.default_content_settings.popups": 0, "download.default_directory": down_path}
+        # 将自定义设置添加到Chrome配置对象实例中
+        chromeOptions.add_experimental_option("prefs", prefs)
+        # 启动带有自定义设置的Chrome浏览器
+        driver = webdriver.Chrome(current_app.config['CHROMEDRIVER'], \
+                                  chrome_options=chromeOptions)
+        driver.maximize_window()  # 窗口最大化（无关紧要哈）
+        # driver.get(path[0])
+        # print('开始')
+        # WebDriverWait(driver, 20).until(EC.alert_is_present())
+        # prompt = driver.switch_to.alert
+        # prompt.send_keys("大力水手吃菠菜")  # 这里输入框中看不到输入的文字
+        # time.sleep(2)
+        # prompt.accept()
+        driver.get('https://scihub.copernicus.eu/dhus/#/home')
+        time.sleep(5)
+        login = driver.find_element_by_class_name("login-ico")
+        login.click()
+        time.sleep(2)
+        user = driver.find_element_by_id("loginUsername")
+        user.send_keys(username)
+        time.sleep(5)
+        word = driver.find_element_by_name("password")
+        # submit = driver.find_element_by_css_selector(".btn .btn-default .login-btn")
+        # user = driver.find_element_by_xpath("//form[@class='ng-valid ng-dirty ng-valid-parse']/div[@class='row'][1]/div[@class='group']/input[@id='loginUsername']")
+        # word = driver.find_element_by_xpath("//form[@class='ng-valid ng-dirty ng-valid-parse']/div[@class='row'][2]/div[@class='group']/input[@class='form-control ng-valid ng-dirty ng-valid-parse ng-touched']")
+        submit = driver.find_element_by_xpath("/html/body/div[@class='ng-scope']/div/div/div[@class='ng-isolate-scope'][7]/div/div[@id='userBadge']/div[2]/form[@class='ng-valid ng-dirty ng-valid-parse']/div[@class='row'][3]/button[@class='btn btn-default login-btn']")
+        word.send_keys(password)
+        time.sleep(5)
+        submit.click()
+        # if len(name) > 1:
+        for i in path:
             time.sleep(5)
-            login = driver.find_element_by_class_name("login-ico")
-            login.click()
-            time.sleep(2)
-            user = driver.find_element_by_id("loginUsername")
-            user.send_keys(username)
-            time.sleep(5)
-            word = driver.find_element_by_name("password")
-            # submit = driver.find_element_by_css_selector(".btn .btn-default .login-btn")
-            # user = driver.find_element_by_xpath("//form[@class='ng-valid ng-dirty ng-valid-parse']/div[@class='row'][1]/div[@class='group']/input[@id='loginUsername']")
-            # word = driver.find_element_by_xpath("//form[@class='ng-valid ng-dirty ng-valid-parse']/div[@class='row'][2]/div[@class='group']/input[@class='form-control ng-valid ng-dirty ng-valid-parse ng-touched']")
-            submit = driver.find_element_by_xpath("/html/body/div[@class='ng-scope']/div/div/div[@class='ng-isolate-scope'][7]/div/div[@id='userBadge']/div[2]/form[@class='ng-valid ng-dirty ng-valid-parse']/div[@class='row'][3]/button[@class='btn btn-default login-btn']")
-            word.send_keys(password)
-            time.sleep(5)
-            submit.click()
-            # if len(name) > 1:
-            for i in path:
-                time.sleep(5)
-                driver.get(i)
-            exists(down_path, name)
-            for q in name:
-                load = down_path + '\\' + q
-                list.append(load)
-            # else:
-            #     load = down_path + '\\' + name[0]
-            #     loneExists(load)
-            #     list.append(load)
-            driver.quit()
-            return jsonify(errno=RET.OK, data=list, errmsg="获取数据成功")
+            driver.get(i)
+        exists(down_path, name)
+        for q in name:
+            load = down_path + '\\' + q
+            list.append(load)
+        # else:
+        #     load = down_path + '\\' + name[0]
+        #     loneExists(load)
+        #     list.append(load)
+        driver.quit()
+        return jsonify(errno=RET.OK, data=list, errmsg="获取数据成功")
 
 
 

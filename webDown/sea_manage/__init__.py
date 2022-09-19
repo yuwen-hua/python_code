@@ -8,7 +8,7 @@ from config import config_map
 from flask_mongoengine import MongoEngine
 from flask_session import Session
 from flask_wtf import CSRFProtect
-from osgeo import gdal
+# from osgeo import gdal
 import flask.scaffold
 from flask_compress import Compress
 
@@ -17,7 +17,7 @@ from sea_manage.untils.response_code import RET
 flask.helpers._endpoint_from_view_func = flask.scaffold._endpoint_from_view_func
 from flask_restplus import Api
 
-gdal = gdal
+# gdal = gdal
 rest_api = Api()
 db = MongoEngine()
 compress = Compress()
@@ -71,4 +71,8 @@ def create_app(config_name, physics=None):
     app.register_blueprint(products.api_copernicus, url_prefix="/api/v1.0")
     app.register_blueprint(products.api_modis, url_prefix="/api/v1.0")
     app.register_blueprint(products.api_remote, url_prefix="/api/v1.0")
+    app.register_blueprint(products.api_hydrology, url_prefix="/api/v1.0")
+    app.register_blueprint(products.api_weather, url_prefix="/api/v1.0")
+    app.register_blueprint(products.api_tide, url_prefix="/api/v1.0")
+    app.register_blueprint(products.api_trend, url_prefix="/api/v1.0")
     return app

@@ -1,9 +1,13 @@
+import json
 import xml.etree.ElementTree as ET
 
+path = 'D:\\dataSource\\tide\\2022\\09\\19\\tide.json'
+data = open(path,'r')
+print(json.loads(data.read()))
 
-arr = [1,2,3,4]
-for i in arr[1:]:
-    print(i)
+# arr = [1,2,3,4]
+# for i in arr[1:]:
+#     print(i)
 
 
 #   global-analysis-forecast-phy-001-024

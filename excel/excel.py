@@ -1,3 +1,4 @@
+import math
 import os
 import xlrd
 import pandas as pd
@@ -18,14 +19,24 @@ for i in ids:
     obj = {
         "id": index,
         "label": i,
-        "children": []
+        "children": [],
+        "chinese_name": ""
     }
     index = index + 1
     children.append(obj)
 for i in data.values:
     for j in children:
         if i[0] == j['label']:
-            
+            # print(i[4],type(i[4]))
+            if type(i[4]) == float:
+                i[4] = ''
+            if type(i[1]) == float:
+                i[1] = ''
+            if type(i[3]) == float:
+                i[3] = ''
+            if math.isnan(i[2]):
+                print((i[2]))
+                i[2] = 0
             obj = {
                 "id": len(j['children']),
                 "label": i[1],
@@ -35,7 +46,7 @@ for i in data.values:
             }
             j['children'].append(obj)
 collection = Tree(
-    label='test',
+    label='s57',
     children=children
 )
 collection.save()

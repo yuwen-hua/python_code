@@ -2,6 +2,7 @@ import datetime
 import os
 from time import sleep
 
+from flask import current_app
 from selenium import webdriver
 
 data = [
@@ -115,8 +116,7 @@ class Chrome():
     def __init__(self):
         # driver = webdriver.Chrome()
         # chromedriver 安装位置
-        chromedriver = "F:/chromedriver_win32/chromedriver"
-        os.environ["webdriver.chrome.driver"] = chromedriver
+        os.environ["webdriver.chrome.driver"] = current_app.config['CHROMEDRIVER']
         chromeOptions = webdriver.ChromeOptions()
 
         option = webdriver.ChromeOptions()
@@ -128,7 +128,7 @@ class Chrome():
         chromeOptions.add_experimental_option("prefs", prefs)
 
         # 将option作为参数添加到Chrome中
-        driver = webdriver.Chrome(chromedriver, \
+        driver = webdriver.Chrome(current_app.config['CHROMEDRIVER'], \
                                   chrome_options=chromeOptions)
 
         # 登录
