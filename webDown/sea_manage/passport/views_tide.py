@@ -35,7 +35,8 @@ class Tide():
         res = res.json()
         data = {}
         date = datetime.datetime.now().strftime('%Y-%m-%d')
-        date_path = date.replace('-', '/')
+        date_path = datetime.datetime.now().strftime('%Y/%m/%d')
+        day = datetime.datetime.now().strftime('%d')
         for i in res['Data']:
             for j in province:
                 if j == i['Name']:
@@ -44,9 +45,10 @@ class Tide():
                     print(requ_data)
                     response = requests.post(url=url, headers=headers, data=requ_data)
                     response = response.json()
-                    data.update({j: response['Data']['SubData']})
+                    data.update({'Data': response['Data']['Data']})
+                    data.update({'SubData': response['Data']['SubData']})
         down_path = 'D:/dataSource/tide' + '/' + date_path
         if not os.path.exists(down_path):
             os.makedirs(down_path)
-        with open(down_path + '/tide.json', 'w', encoding='utf-8') as f:
+        with open(down_path + '/' + day + '.json', 'w', encoding='utf-8') as f:
             f.write(json.dumps(data))

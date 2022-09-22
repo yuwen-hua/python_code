@@ -1,9 +1,42 @@
 import json
 import xml.etree.ElementTree as ET
-
-path = 'D:\\dataSource\\tide\\2022\\09\\19\\tide.json'
-data = open(path,'r')
-print(json.loads(data.read()))
+import ftplib
+import re
+import getpass
+import datetime
+from datetime import timedelta, datetime
+yesterday = datetime.today()+timedelta(-1)
+print(yesterday)
+yesterday_format = yesterday
+print('昨天是：%s' %yesterday_format)
+# HOST = 'my.cmems-du.eu'
+# USERNAME = input('[ACIION]input:')
+# PASSWORD = getpass.getpass('[ACIION]enter:')
+# product_ID = 'GLOBAL_REANALYSIS_PHY_001_031'
+# DATASET_ID = 'global-reanalysis-phy-001-031-grepv2-daily'
+# pattern = '19950501'
+# ftp_get(HOST,product_ID,DATASET_ID,USERNAME,PASSWORD,pattern)
+# host="nrt.cmems-du.eu" #ip或域名
+# username="xchen7"
+# password="Wdmm9916@"
+#
+# ftpServer=ftplib.FTP(host)
+# ftpServer.encoding = "utf-8"
+#
+# ftpServer.login(username,password)
+# ftpServer.cwd('Core')
+# ftpServer.cwd('GLOBAL_ANALYSIS_FORECAST_PHY_001_024')
+# ftpServer.cwd('global-analysis-forecast-phy-001-024')
+# ftpServer.cwd('2022')
+# ftpServer.cwd('09')
+# for i in ftpServer.nlst():
+#     print(i)
+ #列出目录
+# print(ftpServer.dir(),ftpServer.nlst)
+# print("登录成功")
+# path = 'D:\\dataSource\\tide\\2022\\09\\19\\tide.json'
+# data = open(path,'r')
+# print(json.loads(data.read()))
 
 # arr = [1,2,3,4]
 # for i in arr[1:]:

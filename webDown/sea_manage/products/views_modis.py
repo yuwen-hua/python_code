@@ -189,26 +189,27 @@ class MetaInfo(Resource):
         # driver.execute_script(js)
         # driver.close()
         print(detail_url)
-        if len(name) > 1:
-            for i in path[1:]:
-                time.sleep(5)
-                driver.get(i)
-            exists(down_path,name)
-            for q in name:
-                load = down_path + '\\' + q
-                list.append(load)
-        else:
-            load = down_path + '\\' + name[0]
-            loneExists(load)
+        for i in path:
+            time.sleep(5)
+            driver.get(i)
+        exists(down_path, name)
+        for q in name:
+            load = down_path + '\\' + q
             list.append(load)
+        # if len(name) > 1:
+        #     for i in path[1:]:
+        #         time.sleep(5)
+        #         driver.get(i)
+        #     exists(down_path,name)
+        #     for q in name:
+        #         load = down_path + '\\' + q
+        #         list.append(load)
+        # else:
+        #     driver.get(path[0])
+        #     load = down_path + '\\' + name[0]
+        #     loneExists(load)
+        #     list.append(load)
         driver.quit()
-            # down_url = down_path + name
-            # list.append(down_url)
-        # driver.get(detail_url)
-        # js = "window.open({path})".format(path)
-        # driver.execute_script(js)
-        # time.sleep(60)
-        # driver.close()
         return jsonify(errno=RET.OK, data=list, errmsg="获取数据成功")
 
 'https://datapool.asf.alaska.edu/GRD_MS/SA/S1A_EW_GRDM_1SSH_20220209T080909_20220209T081009_041833_04FADD_817C.zip'

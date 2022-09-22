@@ -1,6 +1,7 @@
 # coding:utf-8
 import datetime
 import os
+import time
 
 import requests
 import re
@@ -29,13 +30,23 @@ def size_format(size):
 @ns.route('/metas')
 class DatasetInfo(Resource):
     @api.doc('copernicus自动下载地址')
+    @ns.param('label','父类型')
+    @ns.param('chileLabel', '子类型')
     @ns.param('date','日期')
     def get(self):
         """copernicus自动下载地址"""
         list = []
+        label = request.values.get('label')
+        chileLabel = request.values.get('chileLabel')
         date = request.values.get('date')
-        date_path = date.replace('-', '\\')
-        path = 'D:\\dataSource\\copernicus' + '\\' + date_path
+        path = 'D:\\dataSource\\copernicus'
+        if label:
+            path = path + '\\' + label
+        if chileLabel:
+            path = path + '\\' + chileLabel
+        if date:
+            date_path = date.replace('-', '/')
+            path = path + '\\' + date_path
         for root, dirs, files in os.walk(path):
             for file in files:
                 down_path = current_app.config['DOWNLOADS'] + root.split('dataSource')[1]
@@ -46,7 +57,7 @@ class DatasetInfo(Resource):
                     "size": size_format(os.path.getsize(root + '\\' + file)),
                     "path": root + '\\' + file,
                     "type": "copernicus",
-                    "date": date
+                    "date": time.strftime("%Y-%m-%d", time.localtime(os.stat(root + '\\' + file).st_mtime))
                 }
                 list.append(obj)
         data = {

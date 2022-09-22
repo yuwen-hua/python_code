@@ -1,7 +1,7 @@
 import datetime
 import json
 import os
-
+import time
 
 from sea_manage.products import rest_api as api
 from sea_manage.untils.response_code import RET
@@ -63,7 +63,8 @@ class DatasetInfo(Resource):
         res = res.json()
         data = {}
         date = datetime.datetime.now().strftime('%Y-%m-%d')
-        date_path = date.replace('-', '/')
+        date_path = datetime.datetime.now().strftime('%Y/%m/%d')
+        day = datetime.datetime.now().strftime('%d')
         for i in res['Data']:
             for j in province:
                 if j == i['Name']:
@@ -72,11 +73,12 @@ class DatasetInfo(Resource):
                     print(requ_data)
                     response = requests.post(url=url, headers=headers, data=requ_data)
                     response = response.json()
-                    data.update({j: response['Data']['SubData']})
+                    data.update({'Data': response['Data']['Data']})
+                    data.update({'SubData': response['Data']['SubData']})
         down_path = 'D:/dataSource/trend' + '/' + date_path
         if not os.path.exists(down_path):
             os.makedirs(down_path)
-        with open(down_path + '/trend.json', 'w', encoding='utf-8') as f:
+        with open(down_path + '/' + day + '.json', 'w', encoding='utf-8') as f:
             f.write(json.dumps(data))
         return jsonify(errno=RET.OK, errmsg="查询成功")
 
@@ -101,7 +103,7 @@ class DatasetInfo(Resource):
                     "size": size_format(os.path.getsize(root + '\\' + file)),
                     "path": root + '\\' + file,
                     "type": "trend",
-                    "date": date
+                    "date": time.strftime("%Y-%m-%d", time.localtime(os.stat(root + '\\' + file).st_mtime))
                 }
                 list.append(obj)
         data = {

@@ -7,28 +7,36 @@ from flask_apscheduler import APScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from sea_manage.passport.views_gfs import DownLoad
-# from sea_manage.passport.views_copernicus import Copernicus
-from sea_manage.passport.chromedriver import Chrome
-# from sea_manage.passport.views_weather import Weather
+from sea_manage.passport.views_copernicus import Copernicus
+# from sea_manage.passport.chromedriver import Chrome
+from sea_manage.passport.views_weather import Weather
+from sea_manage.passport.views_trend import Trend
+from sea_manage.passport.views_tide import Tide
 # gunicorn 部署
 app = create_app('product')  # 生产环境
 # app = create_app('dev') # 开发环境
 
 # app = Flask(__name__)
-#
-#
-index = 0
-def down(www):
-    Chrome()
-    # Weather()
+
+
+def down():
+    Copernicus()
     print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+
+
+def con(index):
+    Weather()
+    Trend()
+    Tide()
+    print(index,':',datetime.datetime.now())
 
 
 if __name__ == '__main__':
 
     sched = BackgroundScheduler()
-    sched.add_job(down, 'cron',args=[index+1], id='3_second_job', day_of_week='*', hour=2,minute=22)
-    # sched.add_job(down, 'interval',args=[index], id='3_second_job', seconds=5)
+    sched.add_job(down, 'cron', id='3_second_job', day_of_week='*', hour=2,minute=22)
+    # sched.add_job(down, 'cron',args=[index+1], id='3_second_job', day_of_week='*', hour=2,minute=22)
+    sched.add_job(con, 'cron',args=['时间'], id='1_second_job', day_of_week='*', hour=1,minute=22)
     sched.start()
 
     app.run(host='0.0.0.0', debug=True, port=9000,use_reloader=True)

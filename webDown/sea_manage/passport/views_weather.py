@@ -21,5 +21,5 @@ class Weather():
         down_path = 'D:/dataSource/weather' + '/' + res['data']['date']
         if not os.path.exists(down_path):
             os.makedirs(down_path)
-        with open(down_path + '/weather.txt', 'w', encoding='utf-8') as f:
+        with open(down_path + '/' + res['data']['date'][8:] + '.txt', 'w', encoding='utf-8') as f:
             f.write(json.dumps(data))

@@ -67,7 +67,7 @@ class MetaInfo(Resource):
         end = request.values.get("end")
         bbox = request.values.get("bbox")
         list = []
-        url = 'https://api-prod-private.asf.alaska.edu/services/search/param?platform=SENTINEL-1&instrument=C-SAR'
+        url = 'https://api-prod-private.asf.alaska.edu/services/search/param?platform=SENTINEL-1&instrument=C-SAR&output=jsonlite2'
         if maxResults:
             url = url + '&maxResults={maxResults}'.format(maxResults=maxResults)
         if processinglevel:
@@ -169,19 +169,27 @@ class MetaInfo(Resource):
         # js = "window.open({detail_url})".format(detail_url=detail_url)
         # driver.execute_script(js)
         # driver.close()
-        print(detail_url)
-        if len(name) > 1:
-            for i in path[1:]:
-                time.sleep(5)
-                driver.get(i)
-            exists(down_path,name)
-            for q in name:
-                load = down_path + '\\' + q
-                list.append(load)
-        else:
-            load = down_path + '\\' + name[0]
-            loneExists(load)
+        for i in path:
+            time.sleep(5)
+            driver.get(i)
+        exists(down_path, name)
+        for q in name:
+            load = down_path + '\\' + q
             list.append(load)
+        print(detail_url)
+        # if len(name) > 1:
+        #     for i in path[1:]:
+        #         time.sleep(5)
+        #         driver.get(i)
+        #     exists(down_path,name)
+        #     for q in name:
+        #         load = down_path + '\\' + q
+        #         list.append(load)
+        # else:
+        #     driver.get(path[0])
+        #     load = down_path + '\\' + name[0]
+        #     loneExists(load)
+        #     list.append(load)
         driver.quit()
             # down_url = down_path + name
             # list.append(down_url)

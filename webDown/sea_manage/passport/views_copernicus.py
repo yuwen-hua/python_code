@@ -3,8 +3,9 @@ import json
 import os
 import re
 import time
+import ftplib
 import base64
-import datetime
+from datetime import timedelta, datetime
 import xarray as xr
 import numpy as np
 from selenium import webdriver
@@ -16,8 +17,483 @@ grib2 = "F:/grib2"
 # file = "D:\\Downloads\\gfs"
 #
 os.environ["webdriver.chrome.driver"] = chromedriver  # 将驱动程序三位路径计入到系统路径中
+data =  [
+        {
+            "label": "WIND_GLO_WIND_L3_NRT_OBSERVATIONS_012_002",
+            "children": [
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_HY-2C_HSCAT_25_ASC_V2"
+                },
+            ]
+        },
+        {
+            "label": "WIND_GLO_WIND_L3_NRT_OBSERVATIONS_012_002",
+            "children": [
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_HY-2C_HSCAT_25_DES_V2"
+                },
+            ]
+        },
+        {
+            "label": "WIND_GLO_WIND_L3_NRT_OBSERVATIONS_012_002",
+            "children": [
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_HY-2C_HSCAT_50_ASC_V2"
+                },
+            ]
+        },
+        {
+            "label": "WIND_GLO_WIND_L3_NRT_OBSERVATIONS_012_002",
+            "children": [
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_HY-2C_HSCAT_50_DES_V2"
+                },
+            ]
+        },
+        {
+            "label": "WIND_GLO_WIND_L3_NRT_OBSERVATIONS_012_002",
+            "children": [
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_HY-2B_HSCAT_25_ASC_V2"
+                },
+            ]
+        },
+        {
+            "label": "WIND_GLO_WIND_L3_NRT_OBSERVATIONS_012_002",
+            "children": [
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_HY-2B_HSCAT_25_DES_V2"
+                },
+            ]
+        },
+        {
+            "label": "WIND_GLO_WIND_L3_NRT_OBSERVATIONS_012_002",
+            "children": [
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_HY-2B_HSCAT_50_ASC_V2"
+                },
+            ]
+        },
+        {
+            "label": "WIND_GLO_WIND_L3_NRT_OBSERVATIONS_012_002",
+            "children": [
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_HY-2B_HSCAT_50_DES_V2"
+                },
+            ]
+        },
+        {
+            "label": "WIND_GLO_WIND_L3_NRT_OBSERVATIONS_012_002",
+            "children": [
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_HY-2B_HSCAT_50_DES_V2"
+                },
+            ]
+        },
+        {
+            "label": "WIND_GLO_WIND_L3_NRT_OBSERVATIONS_012_002",
+            "children": [
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_METOP-B_ASCAT_12_ASC_V2"
+                },
+            ]
+        },
+        {
+            "label": "WIND_GLO_WIND_L3_NRT_OBSERVATIONS_012_002",
+            "children": [
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_METOP-B_ASCAT_12_DES_V2"
+                },
+            ]
+        },
+        {
+            "label": "WIND_GLO_WIND_L3_NRT_OBSERVATIONS_012_002",
+            "children": [
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_METOP-B_ASCAT_25_ASC_V2"
+                },
+            ]
+        },
+        {
+            "label": "WIND_GLO_WIND_L3_NRT_OBSERVATIONS_012_002",
+            "children": [
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_METOP-B_ASCAT_25_DES_V2"
+                },
+            ]
+        },
+        {
+            "label": "WIND_GLO_WIND_L3_NRT_OBSERVATIONS_012_002",
+            "children": [
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_METOP-C_ASCAT_12_ASC_V2"
+                },
+            ]
+        },
+        {
+            "label": "WIND_GLO_WIND_L3_NRT_OBSERVATIONS_012_002",
+            "children": [
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_METOP-C_ASCAT_12_DES_V2"
+                },
+            ]
+        },
+        {
+            "label": "WIND_GLO_WIND_L3_NRT_OBSERVATIONS_012_002",
+            "children": [
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_METOP-C_ASCAT_25_ASC_V2"
+                },
+            ]
+        },
+        {
+            "label": "WIND_GLO_WIND_L3_NRT_OBSERVATIONS_012_002",
+            "children": [
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_METOP-C_ASCAT_25_DES_V2"
+                },
+            ]
+        },
+        {
+            "label": "SEALEVEL_GLO_PHY_L4_NRT_OBSERVATIONS_008_046",
+            "children": [
+                {
+                    "label": "dataset-duacs-nrt-global-merged-allsat-phy-l4"
+                }
+            ]
+        },
+        {
+            "label": "WAVE_GLO_WAV_L4_SWH_NRT_OBSERVATIONS_014_003",
+            "children": [
+                {
+                    "label": "dataset-wav-l4-swh-nrt-global"
+                }
+            ]
+        },
+        {
+            "label": "MULTIOBS_GLO_PHY_NRT_015_003",
+            "children": [
+                {
+                    "label": "dataset-uv-nrt-daily"
+                }
+            ]
+        },
+        {
+            "label": "MULTIOBS_GLO_PHY_NRT_015_003",
+            "children": [
+                {
+                    "label": "dataset-uv-nrt-hourly"
+                },
+            ]
+        },
+        {
+            "label": "GLOBAL_ANALYSIS_FORECAST_PHY_001_024",
+            "children": [
+                {
+                    "label": "cmems_mod_glo_phy_anfc_merged-uv_PT1H-i"
+                },
+            ]
+        },
+        {
+            "label": "GLOBAL_ANALYSIS_FORECAST_PHY_001_024",
+            "children": [
+                {
+                    "label": "global-analysis-forecast-phy-001-024"
+                }
+            ]
+        },
+        {
+            "label": "GLOBAL_ANALYSIS_FORECAST_PHY_001_024",
+            "children": [
+                {
+                    "label": "global-analysis-forecast-phy-001-024-3dinst-so"
+                }
+            ]
+        },
+        {
+            "label": "GLOBAL_ANALYSIS_FORECAST_PHY_001_024",
+            "children": [
+                {
+                    "label": "global-analysis-forecast-phy-001-024-3dinst-thetao"
+                }
+            ]
+        },
+        {
+            "label": "GLOBAL_ANALYSIS_FORECAST_PHY_001_024",
+            "children": [
+                {
+                    "label": "global-analysis-forecast-phy-001-024-3dinst-uovo"
+                }
+            ]
+        },
+        {
+            "label": "GLOBAL_ANALYSIS_FORECAST_PHY_001_024",
+            "children": [
+                {
+                    "label": "global-analysis-forecast-phy-001-024-hourly-t-u-v-ssh"
+                }
+            ]
+        },
+        {
+            "label": "GLOBAL_ANALYSIS_FORECAST_PHY_001_024",
+            "children": [
+                {
+                    "label": "global-analysis-forecast-phy-001-024-monthly"
+                }
+            ]
+        },
+        {
+            "label": "GLOBAL_ANALYSIS_FORECAST_WAV_001_027",
+            "children": [
+                {
+                    "label": "global-analysis-forecast-wav-001-027"
+                },
+            ]
+        },
+        {
+            "label": "SST_GLO_SST_L3S_NRT_OBSERVATIONS_010_010",
+            "children": [
+                {
+                    "label": "IFREMER-GLOB-SST-L3-NRT-OBS_FULL_TIME_SERIE"
+                }
+            ]
+        },
+        {
+            "label": "MULTIOBS_GLO_PHY_S_SURFACE_MYNRT_015_013",
+            "children": [
+                {
+                    "label": "dataset-sss-ssd-nrt-monthly"
+                }
+            ]
+        },
+        {
+            "label": "MULTIOBS_GLO_PHY_S_SURFACE_MYNRT_015_013",
+            "children": [
+                {
+                    "label": "dataset-sss-ssd-nrt-weekly"
+                },
+            ]
+        },
+        {
+            "label": "OCEANCOLOUR_GLO_BGC_L3_NRT_009_101",
+            "children": [
+                {
+                    "label": "cmems_obs-oc_glo_bgc-plankton_nrt_l3-multi-4km_P1D"
+                },
+            ]
+        },
+        {
+            "label": "OCEANCOLOUR_GLO_BGC_L3_NRT_009_101",
+            "children": [
+                {
+                    "label": "cmems_obs-oc_glo_bgc-plankton_nrt_l3-olci-300m_P1D"
+                },
+            ]
+        },
+        {
+            "label": "OCEANCOLOUR_GLO_BGC_L3_NRT_009_101",
+            "children": [
+                {
+                    "label": "cmems_obs-oc_glo_bgc-plankton_nrt_l3-olci-4km_P1D"
+                },
+            ]
+        },
+        {
+            "label": "OCEANCOLOUR_GLO_BGC_L3_NRT_009_101",
+            "children": [
+                {
+                    "label": "cmems_obs-oc_glo_bgc-reflectance_nrt_l3-multi-4km_P1D"
+                },
+            ]
+        },
+        {
+            "label": "OCEANCOLOUR_GLO_BGC_L3_NRT_009_101",
+            "children": [
+                {
+                    "label": "cmems_obs-oc_glo_bgc-reflectance_nrt_l3-olci-4km_P1D"
+                },
+            ]
+        },
+        {
+            "label": "OCEANCOLOUR_GLO_BGC_L3_NRT_009_101",
+            "children": [
+                {
+                    "label": "cmems_obs-oc_glo_bgc-transp_nrt_l3-multi-4km_P1D"
+                },
+            ]
+        },
+        {
+            "label": "OCEANCOLOUR_GLO_BGC_L3_NRT_009_101",
+            "children": [
+                {
+                    "label": "cmems_obs-oc_glo_bgc-transp_nrt_l3-olci-4km_P1D"
+                },
+            ]
+        },
+        {
+            "label": "OCEANCOLOUR_GLO_BGC_L3_NRT_009_101",
+            "children": [
+                {
+                    "label": "cmems_obs-oc_glo_bgc-optics_nrt_l3-multi-4km_P1D"
+                }
+            ]
+        }
+    ]
+
+buffer_size = 1024 * 1024
+
+class Copernicus():
+    def __init__(self):
+        for i in data:
+            for j in i['children']:
+                self.start(i, j)
+
+    def login(self):
+        host = "nrt.cmems-du.eu"
+        username = "xchen7"
+        password = "Wdmm9916@"
+        ftpServer = ftplib.FTP(host)
+        ftpServer.encoding = "utf-8"
+        ftpServer.login(username, password)
+        print('开启连接')
+        return ftpServer
 
 
+    def start(self,i,j):
+        ftpServer = self.login()
+        # host = "nrt.cmems-du.eu"
+        # username = "xchen7"
+        # password = "Wdmm9916@"
+        # ftpServer = ftplib.FTP(host)
+        # ftpServer.encoding = "utf-8"
+        # ftpServer.login(username, password)
+
+        ftpServer.cwd('Core')
+        ftpServer.cwd(i['label'])
+        ftpServer.cwd(j['label'])
+        year = datetime.now().strftime('%Y')
+        month = datetime.now().strftime('%m')
+        yesterday = (datetime.today() + timedelta(days=-1)).strftime("%Y%m%d")
+        yesterday_path = (datetime.today() + timedelta(days=-1)).strftime("%Y/%m/%d")
+        beforeyesterday = (datetime.today() + timedelta(days=-2)).strftime("%Y%m%d")
+        beforeyesterday_path = (datetime.today() + timedelta(days=-2)).strftime("%Y/%m/%d")
+        day = datetime.now().strftime('%Y%m%d')
+        day_path = datetime.now().strftime('%Y/%m/%d')
+        print(i['label'], j['label'])
+        ftpServer.cwd(year)
+        if i['label'] != 'MULTIOBS_GLO_PHY_S_SURFACE_MYNRT_015_013':
+            ftpServer.cwd(month)
+        for filename in ftpServer.nlst():
+            if "WIND_GLO_WIND_L3_NRT_OBSERVATIONS_012_002" == i['label'] or "OCEANCOLOUR_GLO_BGC_L3_NRT_009_101" == i[
+                'label'] or "MULTIOBS_GLO_PHY_S_SURFACE_MYNRT_015_013" == i['label']:
+                if beforeyesterday in filename:
+                    print(i['label'] + '/' + j['label'] + '/' + filename)
+                    dst_file_path = "D:/dataSource/copernicus/" + i['label'] + '/' + j['label'] + '/' + yesterday_path
+                    if not os.path.exists(dst_file_path):
+                        os.makedirs(dst_file_path)
+                    try:
+                        self.download(ftpServer, filename, dst_file_path)
+                    except Exception as e:
+                        print(e)
+                        ftpServer = self.login()
+                        self.download(ftpServer, filename, dst_file_path)
+            else:
+                if yesterday in filename:
+                    print(i['label'] + '/' + j['label'] + '/' + filename)
+                    dst_file_path = "D:/dataSource/copernicus/" + i['label'] + '/' + j['label'] + '/' + yesterday_path
+                    if not os.path.exists(dst_file_path):
+                        os.makedirs(dst_file_path)
+                    try:
+                        self.download(ftpServer, filename, dst_file_path)
+                    except Exception as e:
+                        print(e)
+                        ftpServer = self.login()
+                        self.download(ftpServer, filename, dst_file_path)
+
+    def download(self,ftp, filename,dst_file_path):
+        down_path = dst_file_path + '/' + filename
+        f = open(down_path,"wb").write
+        # with open(down_path, 'wb') as f:
+        try:
+            ftp.retrbinary("RETR %s"%filename, f, buffer_size)
+            print('成功下载文件： "%s"' % filename)
+        except ftplib.error_perm:
+            return False
+        return True
+
+
+
+        # host="nrt.cmems-du.eu"
+        # username="xchen7"
+        # password="Wdmm9916@"
+        # buffer_size = 1024 * 1024
+        # ftpServer=ftplib.FTP(host)
+        # ftpServer.encoding = "utf-8"
+        # ftpServer.login(username,password)
+        # login = True
+        # print('开启连接')
+        # ftpServer.cwd('Core')
+        # ftpServer.cwd(i['label'])
+        # ftpServer.cwd(j['label'])
+        # year = datetime.now().strftime('%Y')
+        # month = datetime.now().strftime('%m')
+        # yesterday = (datetime.today() + timedelta(days=-1)).strftime("%Y%m%d")
+        # yesterday_path = (datetime.today() + timedelta(days=-1)).strftime("%Y/%m")
+        # beforeyesterday = (datetime.today() + timedelta(days=-2)).strftime("%Y%m%d")
+        # beforeyesterday_path = (datetime.today() + timedelta(days=-2)).strftime("%Y/%m/%d")
+        # day = datetime.now().strftime('%Y%m%d')
+        # day_path = datetime.now().strftime('%Y/%m/%d')
+        # print(i['label'],j['label'])
+        # ftpServer.cwd(year)
+        # if i['label'] != 'MULTIOBS_GLO_PHY_S_SURFACE_MYNRT_015_013':
+        #     ftpServer.cwd(month)
+        # for filename in ftpServer.nlst():
+        #     if "WIND_GLO_WIND_L3_NRT_OBSERVATIONS_012_002" == i['label'] or "OCEANCOLOUR_GLO_BGC_L3_NRT_009_101" == i['label'] or "MULTIOBS_GLO_PHY_S_SURFACE_MYNRT_015_013" == i['label']:
+        #         if beforeyesterday in filename:
+        #             print(i['label'] + '/' +  j['label'] +'/'+ filename)
+        #             dst_file_path = "D:/dataSource/copernicus/" + i['label'] + '/' + j['label'] + '/' + yesterday_path
+        #             if not os.path.exists(dst_file_path):
+        #                 os.makedirs(dst_file_path)
+        #             data = download(ftpServer, filename,dst_file_path)
+        #             if data:
+        #
+        #                 login = False
+        #     else:
+        #         if yesterday in filename:
+        #             print(i['label'] + '/' +  j['label'] +'/'+ filename)
+        #             dst_file_path = "D:/dataSource/copernicus/" + i['label'] + '/' + j['label'] + '/' + yesterday_path
+        #             if not os.path.exists(dst_file_path):
+        #                 os.makedirs(dst_file_path)
+        #             try:
+        #                 download(ftpServer, filename, dst_file_path)
+        #             except Exception as e:
+        # ftpServer.close()
+        # ftpServer.quit()
+        # year = datetime.datetime.now().strftime('%Y')
+        # month = datetime.datetime.now().strftime('%m')
+        # day = datetime.datetime.now().strftime('%d')
+        # ftpServer.cwd(year)
+        # ftpServer.cwd(month)
+        # print(ftpServer.pwd())
+        # for filename in ftpServer.nlst():
+        #     date = filename.split('.nc')[0][-2:]
+        #     if day == date:
+        #         weather = download(ftpServer, filename)
+#
+# ftpServer.cwd('Core/GLOBAL_ANALYSIS_FORECAST_PHY_001_024/global-analysis-forecast-phy-001-024-statics')
+# for i in ftpServer.nlst():
+#     print(i)
+# for i in ftpServer.nlst():
+#     print(i)
+#     day = i.split('.nc')[0][-2:]
+#     date = datetime.datetime.now().strftime('%d')
+#     print(day,date,type(day),type(date))
+#     if day == date:
+#         ftpServer.set_pasv(False)
+#         weather = download(ftpServer,i)
+#         if weather:
+#             ftpServer.quit()
+# ftpServer.cwd('Core')
 
 import requests
 # from sea_manage.products import rest_api as api

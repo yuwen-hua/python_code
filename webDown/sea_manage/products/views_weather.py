@@ -1,6 +1,6 @@
 import json
 import os
-
+import time
 
 from sea_manage.products import rest_api as api
 from sea_manage.untils.response_code import RET
@@ -46,7 +46,7 @@ class DatasetInfo(Resource):
         down_path = 'D:/dataSource/weather' + '/' + res['data']['date']
         if not os.path.exists(down_path):
             os.makedirs(down_path)
-        with open(down_path + '/weather.json', 'w', encoding='utf-8') as f:
+        with open(down_path + '/' + res['data']['date'][8:] + '.txt', 'w', encoding='utf-8') as f:
             f.write(json.dumps(data))
 
 @ns.route('/metas')
@@ -69,7 +69,7 @@ class DatasetInfo(Resource):
                     "size": size_format(os.path.getsize(root + '\\' + file)),
                     "path": root + '\\' + file,
                     "type": "weather",
-                    "date": date
+                    "date": time.strftime("%Y-%m-%d", time.localtime(os.stat(root + '\\' + file).st_mtime))
                 }
                 list.append(obj)
         data = {
