@@ -6,6 +6,8 @@ from sea_manage import create_app
 from flask_apscheduler import APScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 
+from apscheduler.triggers.cron import CronTrigger
+
 from sea_manage.passport.views_gfs import DownLoad
 from sea_manage.passport.views_copernicus import Copernicus
 # from sea_manage.passport.chromedriver import Chrome
@@ -24,22 +26,27 @@ def down():
     print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 
-def con(index):
+def con():
     Weather()
     Trend()
     Tide()
-    print(index,':',datetime.datetime.now())
+    print(':',datetime.datetime.now())
 
 
 if __name__ == '__main__':
 
     sched = BackgroundScheduler()
-    sched.add_job(down, 'cron', id='3_second_job', day_of_week='*', hour=2,minute=22)
+    # sched.add_job(down, 'cron', id='3_second_job', day_of_week='*', hour=2,minute=22)
     # sched.add_job(down, 'cron',args=[index+1], id='3_second_job', day_of_week='*', hour=2,minute=22)
-    sched.add_job(con, 'cron',args=['时间'], id='1_second_job', day_of_week='*', hour=1,minute=22)
+    # sched.add_job(con, 'cron',args=['时间'], id='1_second_job', day_of_week='*', hour=1,minute=22)
+
+    trggier = CronTrigger(day_of_week='*', hour=2,minute=22)
+    sched.add_job(down, id='3_second_job', trigger=trggier)
+    trggier1 = CronTrigger(day_of_week='*', hour=11,minute=23)
+    sched.add_job(con,id='1_second_job', trigger=trggier1)
     sched.start()
 
-    app.run(host='0.0.0.0', debug=True, port=9000,use_reloader=True)
+    # app.run(host='0.0.0.0', debug=True, port=9000,use_reloader=True)
     # user_reloader 需要在服务器上运行时关闭， 否则会开启两个进程
-    # app.run(host='0.0.0.0', debug=False, port=9000,use_reloader=False)
+    app.run(host='0.0.0.0', debug=False, port=9000,use_reloader=False)
 
