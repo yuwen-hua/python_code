@@ -11,6 +11,8 @@ from flask import request, jsonify, current_app, send_file
 from flask_restplus import Resource
 
 from sea_manage.untils.response_code import RET
+from sea_manage.passport.views_copernicus import Copernicus
+
 
 ns = api.namespace('marine', description='哥白尼模块API')
 
@@ -26,6 +28,13 @@ def size_format(size):
         return '%.1f' % float(size/1000000000) + 'GB'
     elif 1000000000000 <= size:
         return '%.1f' % float(size/1000000000000) + 'TB'
+
+@ns.route('/test')
+class TestInfo(Resource):
+    def get(self):
+        Copernicus()
+        return jsonify(errno=RET.OK, errmsg="查询成功")
+
 
 @ns.route('/metas')
 class DatasetInfo(Resource):

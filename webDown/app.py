@@ -42,11 +42,11 @@ if __name__ == '__main__':
 
     trggier = CronTrigger(day_of_week='*', hour=2,minute=22)
     sched.add_job(down, id='3_second_job', trigger=trggier)
-    trggier1 = CronTrigger(day_of_week='*', hour=11,minute=23)
+    trggier1 = CronTrigger(day_of_week='*', hour=8,minute=23)
     sched.add_job(con,id='1_second_job', trigger=trggier1)
     sched.start()
 
     # app.run(host='0.0.0.0', debug=True, port=9000,use_reloader=True)
     # user_reloader 需要在服务器上运行时关闭， 否则会开启两个进程
-    app.run(host='0.0.0.0', debug=False, port=9000,use_reloader=False)
+    app.run(host='0.0.0.0', debug=False, port=5889,use_reloader=False)
 

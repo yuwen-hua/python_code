@@ -146,11 +146,24 @@ class MetaInfo(Resource):
         path = request.values.get('path').split(',')
         username = request.values.get('username')
         password = request.values.get('password')
+        list = []
         today = datetime.datetime.now().strftime('%Y\\%m\\%d')
         t = round(time.time())
         t_10 = str(t)
-        down_path = 'D:\\dataSource\\webDown\\' + today + '\\' + t_10
-        list = []
+        # down_path = 'D:\\dataSource\\webDown\\' + today + '\\' + t_10
+        down_path = 'D:\\dataSource\\webDown'
+        for root, dirs, files in os.walk(down_path):
+            for file in files:
+                for i in range(len(name)):
+                    if file == name[i]:
+                        load = down_path + '\\' + name[i]
+                        obj = {
+                            "name": name[i],
+                            "path": load
+                        }
+                        list.append(obj)
+                        name.pop(i)
+                        path.pop(i)
         # for q in name:
         #     load = down_path + '\\' + q
         #
@@ -195,7 +208,11 @@ class MetaInfo(Resource):
         exists(down_path, name)
         for q in name:
             load = down_path + '\\' + q
-            list.append(load)
+            obj = {
+                "name": q,
+                "path": load
+            }
+            list.append(obj)
         # if len(name) > 1:
         #     for i in path[1:]:
         #         time.sleep(5)

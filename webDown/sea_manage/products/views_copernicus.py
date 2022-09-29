@@ -143,11 +143,24 @@ class MetaInfo(Resource):
         path = request.values.get('path').split(',')
         username = request.values.get('username')
         password = request.values.get('password')
+        list = []
         today = datetime.datetime.now().strftime('%Y\\%m\\%d')
         t = round(time.time())
         t_10 = str(t)
-        down_path = 'D:\\dataSource\\webDown\\' + today + '\\' + t_10
-        list = []
+        # down_path = 'D:\\dataSource\\webDown\\' + today + '\\' + t_10
+        down_path = 'D:\\dataSource\\webDown'
+        for root, dirs, files in os.walk(down_path):
+            for file in files:
+                for i in range(len(name)):
+                    if file == name[i]:
+                        load = down_path + '\\' + name[i]
+                        obj = {
+                            "name": name[i],
+                            "path": load
+                        }
+                        list.append(obj)
+                        name.pop(i)
+                        path.pop(i)
         os.environ["webdriver.chrome.driver"] = current_app.config['CHROMEDRIVER']
         chromeOptions = webdriver.ChromeOptions()
         # 设定下载文件的保存目录
@@ -189,7 +202,11 @@ class MetaInfo(Resource):
         exists(down_path, name)
         for q in name:
             load = down_path + '\\' + q
-            list.append(load)
+            obj = {
+                "name": q,
+                "path": load
+            }
+            list.append(obj)
         # else:
         #     load = down_path + '\\' + name[0]
         #     loneExists(load)
