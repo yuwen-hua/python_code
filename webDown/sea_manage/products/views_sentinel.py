@@ -127,7 +127,9 @@ class MetaInfo(Resource):
         path = request.values.get('path').split(',')
         username = request.values.get('username')
         password = request.values.get('password')
-        list = []
+        arr = []
+        list_name = []
+        list_path = []
         today = datetime.datetime.now().strftime('%Y\\%m\\%d')
         t = round(time.time())
         t_10 = str(t)
@@ -137,81 +139,96 @@ class MetaInfo(Resource):
             for file in files:
                 for i in range(len(name)):
                     if file == name[i]:
-                        load = down_path + '\\' + name[i]
-                        obj = {
-                            "name": name[i],
-                            "path": load
-                        }
-                        list.append(obj)
-                        name.pop(i)
-                        path.pop(i)
-
-        os.environ["webdriver.chrome.driver"] = current_app.config['CHROMEDRIVER']
-
-        chromeOptions = webdriver.ChromeOptions()
-        # 设定下载文件的保存目录
-        # 如果该目录不存在，将会自动创建
-        prefs = {"profile.default_content_settings.popups": 0,"download.default_directory": down_path}
-        # 将自定义设置添加到Chrome配置对象实例中
-        chromeOptions.add_experimental_option("prefs", prefs)
-        # 启动带有自定义设置的Chrome浏览器
-        driver = webdriver.Chrome(current_app.config['CHROMEDRIVER'], \
-                                  chrome_options=chromeOptions)
-        driver.maximize_window()  # 窗口最大化（无关紧要哈）
-        driver.get(path[0])
-        user = driver.find_element_by_xpath("//form[@id='login']/p[1]/input[@id='username']")
-        user.send_keys(username)
-        time.sleep(5)
-        word = driver.find_element_by_xpath("//form[@id='login']/p[2]/input[@id='password']")
-        time.sleep(5)
-        word.send_keys(password)
-        submit = driver.find_element_by_xpath("//form[@id='login']/p[8]/input[@class='eui-btn--round eui-btn--green']")
-        submit.click()
-        detail_url = driver.find_element_by_xpath("//section[@class='page-block']/p[3]/a").get_attribute("href")
-        time.sleep(5)
-        # cookies = driver.get_cookies()
-        # for cookie in cookies:
-        #     if 'expiry' in cookie:  # 有的cookie里面有这个参数，有的没有。有的话，需要做处理。
-        #         del cookie['expiry']
-        #     driver.add_cookie(cookie)  # 传入cookie
-        # driver.refresh()  # 刷新页面
-        # js = "window.open({detail_url})".format(detail_url=detail_url)
-        # driver.execute_script(js)
-        # driver.close()
-        for i in path:
-            time.sleep(5)
-            driver.get(i)
-        exists(down_path, name)
-        for q in name:
-            load = down_path + '\\' + q
+                        # load = down_path + '\\' + name[i]
+                        # obj = {
+                        #     "name": name[i],
+                        #     "path": load
+                        # }
+                        # list.append(obj)
+                        list_name.append(name[i])
+                        list_path.append(path[i])
+                        # name.pop(i)
+                        # path.pop(i)
+        list_name = list(set(list_name))
+        list_path = list(set(list_path))
+        name = [x for x in name if x not in list_name]
+        path = [x for x in path if x not in list_path]
+        print((name))
+        print((path))
+        for i in range(len(list_name)):
+            load = down_path + '\\' + list_name[i]
             obj = {
-                "name": q,
+                "name": list_name[i],
                 "path": load
             }
-            list.append(obj)
-        print(detail_url)
-        # if len(name) > 1:
-        #     for i in path[1:]:
-        #         time.sleep(5)
-        #         driver.get(i)
-        #     exists(down_path,name)
-        #     for q in name:
-        #         load = down_path + '\\' + q
-        #         list.append(load)
-        # else:
-        #     driver.get(path[0])
-        #     load = down_path + '\\' + name[0]
-        #     loneExists(load)
-        #     list.append(load)
-        driver.quit()
-            # down_url = down_path + name
-            # list.append(down_url)
-        # driver.get(detail_url)
-        # js = "window.open({path})".format(path)
-        # driver.execute_script(js)
-        # time.sleep(60)
-        # driver.close()
-        return jsonify(errno=RET.OK, data=list, errmsg="获取数据成功")
+            arr.append(obj)
+        if len(name) != 0:
+            os.environ["webdriver.chrome.driver"] = current_app.config['CHROMEDRIVER']
+
+            chromeOptions = webdriver.ChromeOptions()
+            # 设定下载文件的保存目录
+            # 如果该目录不存在，将会自动创建
+            prefs = {"profile.default_content_settings.popups": 0,"download.default_directory": down_path}
+            # 将自定义设置添加到Chrome配置对象实例中
+            chromeOptions.add_experimental_option("prefs", prefs)
+            # 启动带有自定义设置的Chrome浏览器
+            driver = webdriver.Chrome(current_app.config['CHROMEDRIVER'], \
+                                      chrome_options=chromeOptions)
+            driver.maximize_window()  # 窗口最大化（无关紧要哈）
+            driver.get(path[0])
+            user = driver.find_element_by_xpath("//form[@id='login']/p[1]/input[@id='username']")
+            user.send_keys(username)
+            time.sleep(5)
+            word = driver.find_element_by_xpath("//form[@id='login']/p[2]/input[@id='password']")
+            time.sleep(5)
+            word.send_keys(password)
+            submit = driver.find_element_by_xpath("//form[@id='login']/p[8]/input[@class='eui-btn--round eui-btn--green']")
+            submit.click()
+            detail_url = driver.find_element_by_xpath("//section[@class='page-block']/p[3]/a").get_attribute("href")
+            time.sleep(5)
+            # cookies = driver.get_cookies()
+            # for cookie in cookies:
+            #     if 'expiry' in cookie:  # 有的cookie里面有这个参数，有的没有。有的话，需要做处理。
+            #         del cookie['expiry']
+            #     driver.add_cookie(cookie)  # 传入cookie
+            # driver.refresh()  # 刷新页面
+            # js = "window.open({detail_url})".format(detail_url=detail_url)
+            # driver.execute_script(js)
+            # driver.close()
+            for i in path:
+                time.sleep(5)
+                driver.get(i)
+            exists(down_path, name)
+            for q in name:
+                load = down_path + '\\' + q
+                obj = {
+                    "name": q,
+                    "path": load
+                }
+                arr.append(obj)
+            print(detail_url)
+            # if len(name) > 1:
+            #     for i in path[1:]:
+            #         time.sleep(5)
+            #         driver.get(i)
+            #     exists(down_path,name)
+            #     for q in name:
+            #         load = down_path + '\\' + q
+            #         list.append(load)
+            # else:
+            #     driver.get(path[0])
+            #     load = down_path + '\\' + name[0]
+            #     loneExists(load)
+            #     list.append(load)
+            driver.quit()
+                # down_url = down_path + name
+                # list.append(down_url)
+            # driver.get(detail_url)
+            # js = "window.open({path})".format(path)
+            # driver.execute_script(js)
+            # time.sleep(60)
+            # driver.close()
+        return jsonify(errno=RET.OK, data=arr, errmsg="获取数据成功")
 
 'https://datapool.asf.alaska.edu/GRD_MS/SA/S1A_EW_GRDM_1SSH_20220209T080909_20220209T081009_041833_04FADD_817C.zip'
 'S1A_EW_GRDM_1SSH_20220209T080909_20220209T081009_041833_04FADD_817C'
