@@ -101,14 +101,20 @@ class MetaInfo(Resource):
         res = res.json()
         for i in res['results']:
             # if i['f'] == 635:
-            http = i['du'].split('{')[0]
-            path = http + i['gn'] + '.zip'
+            # http = i['du'].split('{')[0]
+            path = i['du'].replace('{gn}', i['gn'])
+            thumbnail_url = i['t'].replace('{gn}', i['gn'])
+            # img_url = img_url + i['gn'] + '_thumb.jpg'
+            img_url = i['b'][0].replace('{gn}', i['gn'])
             obj = {
                 "path": path,
                 "name": i['gn'] + '.zip',
                 "size": str(round(i['s'],2)) + 'MB',
                 "date": i['st'],
-                "type": i['pt']
+                "type": i['pt'],
+                "img": img_url,
+                "thumbnail": thumbnail_url,
+                "coordinates": i['w']
             }
             list.append(obj)
         return jsonify(errno=RET.OK, data=list, errmsg="获取数据成功")

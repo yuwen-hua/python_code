@@ -1,6 +1,7 @@
 import datetime
 import json
 import os
+import time
 
 import requests
 
@@ -47,6 +48,7 @@ class Tide():
                     response = response.json()
                     data.update({'Data': response['Data']['Data']})
                     data.update({'SubData': response['Data']['SubData']})
+                    time.sleep(10)
         down_path = 'D:/dataSource/tide' + '/' + date_path
         if not os.path.exists(down_path):
             os.makedirs(down_path)

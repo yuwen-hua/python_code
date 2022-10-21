@@ -19,7 +19,7 @@ try:
         cursor.execute(sql)
         # result = cursor.fetchall()
         result = cursor.fetchall()
-        result = result[82475:]
+        result = result[:]
         print('共{n}个'.format(n=len(result)))
         for i in range(len(result)):
             # obj = {

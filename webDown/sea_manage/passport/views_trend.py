@@ -1,3 +1,5 @@
+import time
+
 import requests
 import datetime
 import json
@@ -47,6 +49,7 @@ class Trend():
                     response = response.json()
                     data.update({'Data': response['Data']['Data']})
                     data.update({'SubData': response['Data']['SubData']})
+                    time.sleep(10)
         down_path = 'D:/dataSource/trend' + '/' + date_path
         if not os.path.exists(down_path):
             os.makedirs(down_path)
