@@ -114,3 +114,38 @@ ENC = {
     "DepthsA": DepthsA,
     "DepthsL": DepthsL
 }
+
+
+class Enc_Vector_Data(DynamicDocument):
+    _id = ObjectIdField(required=True, primary_key=True)
+    TILEKEY = StringField()
+    GDALFORMAT = StringField()
+    IMAGE = StringField()
+    dict = DictField()
+
+class Enc_Vector_Data_Point(DynamicDocument):
+    _id = ObjectIdField(required=True, primary_key=True)
+    # TILEKEY = StringField()
+    # GDALFORMAT = StringField()
+    # IMAGE = StringField()
+    # dict = DictField()
+    location = PointField()
+    meta = {'db_alias': 'Enc_Vector_Data'}
+
+class Enc_Vector_Data_LineString(DynamicDocument):
+    _id = ObjectIdField(required=True, primary_key=True)
+    # TILEKEY = StringField()
+    # GDALFORMAT = StringField()
+    # IMAGE = StringField()
+    # dict = DictField()
+    location = LineStringField()
+    meta = {'db_alias': 'Enc_Vector_Data'}
+
+class Enc_Vector_Data_Polygon(DynamicDocument):
+    _id = ObjectIdField(required=True, primary_key=True)
+    # TILEKEY = StringField()
+    # GDALFORMAT = StringField()
+    # IMAGE = StringField()
+    # dict = DictField()
+    location = PolygonField()
+    meta = {'db_alias': 'Enc_Vector_Data'}

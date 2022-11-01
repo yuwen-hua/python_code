@@ -46,6 +46,8 @@ class Copernicus():
         # ftpServer.encoding = "utf-8"
         # ftpServer.login(username, password)
 
+
+        # ftpServer.cwd() 进入文件夹
         ftpServer.cwd('Core')
         ftpServer.cwd(i['label'])
         ftpServer.cwd(j['label'])
@@ -64,6 +66,7 @@ class Copernicus():
         for filename in ftpServer.nlst():
             if "WIND_GLO_WIND_L3_NRT_OBSERVATIONS_012_002" == i['label'] or "OCEANCOLOUR_GLO_BGC_L3_NRT_009_101" == i[
                 'label'] or "MULTIOBS_GLO_PHY_S_SURFACE_MYNRT_015_013" == i['label']:
+                # 判断是否有当天的数据
                 if beforeyesterday in filename:
                     print(i['label'] + '/' + j['label'] + '/' + filename)
                     dst_file_path = "D:/dataSource/copernicus/" + i['label'] + '/' + j['label'] + '/' + yesterday_path
