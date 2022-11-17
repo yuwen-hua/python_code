@@ -1,0 +1,165 @@
+data =  [
+        {
+            "label": "GLOBAL_ANALYSIS_FORECAST_PHY_001_024",
+            "children": [
+                {
+                    "label": "cmems_mod_glo_phy_anfc_merged-uv_PT1H-i"
+                },
+                {
+                    "label": "global-analysis-forecast-phy-001-024"
+                },
+                {
+                    "label": "global-analysis-forecast-phy-001-024-3dinst-so"
+                },
+                {
+                    "label": "global-analysis-forecast-phy-001-024-3dinst-thetao"
+                },
+                {
+                    "label": "global-analysis-forecast-phy-001-024-3dinst-uovo"
+                },
+                {
+                    "label": "global-analysis-forecast-phy-001-024-hourly-t-u-v-ssh"
+                }
+            ]
+        },
+        {
+            "label": "GLOBAL_ANALYSIS_FORECAST_WAV_001_027",
+            "children": [
+                {
+                    "label": "global-analysis-forecast-wav-001-027"
+                }
+            ]
+        },
+        {
+            "label": "WIND_GLO_WIND_L3_NRT_OBSERVATIONS_012_002",
+            "children": [
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_HY-2C_HSCAT_25_ASC_V2"
+                },
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_HY-2C_HSCAT_25_DES_V2"
+                },
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_HY-2C_HSCAT_50_ASC_V2"
+                },
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_HY-2C_HSCAT_50_DES_V2"
+                },
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_HY-2B_HSCAT_25_ASC_V2"
+                },
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_HY-2B_HSCAT_25_DES_V2"
+                },
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_HY-2B_HSCAT_50_ASC_V2"
+                },
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_HY-2B_HSCAT_50_DES_V2"
+                },
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_HY-2B_HSCAT_50_DES_V2"
+                },
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_METOP-B_ASCAT_12_ASC_V2"
+                },
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_METOP-B_ASCAT_12_DES_V2"
+                },
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_METOP-B_ASCAT_25_ASC_V2"
+                },
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_METOP-B_ASCAT_25_DES_V2"
+                },
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_METOP-C_ASCAT_12_ASC_V2"
+                },
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_METOP-C_ASCAT_12_DES_V2"
+                },
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_METOP-C_ASCAT_25_ASC_V2"
+                },
+                {
+                    "label": "KNMI-GLO-WIND_L3-OBS_METOP-C_ASCAT_25_DES_V2"
+                },
+            ]
+        },
+        {
+            "label": "SEALEVEL_GLO_PHY_L4_NRT_OBSERVATIONS_008_046",
+            "children": [
+                {
+                    "label": "dataset-duacs-nrt-global-merged-allsat-phy-l4"
+                }
+            ]
+        },
+        {
+            "label": "WAVE_GLO_WAV_L4_SWH_NRT_OBSERVATIONS_014_003",
+            "children": [
+                {
+                    "label": "dataset-wav-l4-swh-nrt-global"
+                }
+            ]
+        },
+        {
+            "label": "MULTIOBS_GLO_PHY_NRT_015_003",
+            "children": [
+                {
+                    "label": "dataset-uv-nrt-daily"
+                },
+                {
+                    "label": "dataset-uv-nrt-hourly"
+                },
+            ]
+        },
+        {
+            "label": "SST_GLO_SST_L3S_NRT_OBSERVATIONS_010_010",
+            "children": [
+                {
+                    "label": "IFREMER-GLOB-SST-L3-NRT-OBS_FULL_TIME_SERIE"
+                }
+            ]
+        },
+        {
+            "label": "MULTIOBS_GLO_PHY_S_SURFACE_MYNRT_015_013",
+            "children": [
+                {
+                    "label": "dataset-sss-ssd-nrt-monthly"
+                },
+                {
+                    "label": "dataset-sss-ssd-nrt-weekly"
+                },
+            ]
+        },
+        {
+            "label": "OCEANCOLOUR_GLO_BGC_L3_NRT_009_101",
+            "config": "获取昨天日期——20220910_cmems_obs-oc_glo_bgc-transp_nrt_l3-olci-4km_P1D.nc",
+            "children": [
+                {
+                    "label": "cmems_obs-oc_glo_bgc-plankton_nrt_l3-multi-4km_P1D"
+                },
+                {
+                    "label": "cmems_obs-oc_glo_bgc-plankton_nrt_l3-olci-300m_P1D"
+                },
+                {
+                    "label": "cmems_obs-oc_glo_bgc-plankton_nrt_l3-olci-4km_P1D"
+                },
+                {
+                    "label": "cmems_obs-oc_glo_bgc-reflectance_nrt_l3-multi-4km_P1D"
+                },
+                {
+                    "label": "cmems_obs-oc_glo_bgc-reflectance_nrt_l3-olci-4km_P1D"
+                },
+                {
+                    "label": "cmems_obs-oc_glo_bgc-transp_nrt_l3-multi-4km_P1D"
+                },
+                {
+                    "label": "cmems_obs-oc_glo_bgc-transp_nrt_l3-olci-4km_P1D"
+                },
+                {
+                    "label": "cmems_obs-oc_glo_bgc-optics_nrt_l3-multi-4km_P1D"
+                }
+            ]
+        }
+    ]

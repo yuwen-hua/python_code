@@ -1,0 +1,28 @@
+app.py
+下行代码为开启一个定时器，每天2:22启动
+sched.add_job(down, 'cron',args=[index+1], id='3_second_job', day_of_week='*', hour=2,minute=22)
+
+
+所有用到的网页都需要设置 chromedriver 路径
+路径设置在config.py中CHROMEDRIVER
+chromedriver 下载地址：
+https://chromedriver.chromium.org/downloads
+https://chromedriver.storage.googleapis.com/index.html?path=104.0.5112.79/
+
+
+sea_manage/passport/chromedriver.py	自动下载哥白尼网站所有数据	网站需要登录，账号密码默认填写之前所给的账号
+账号：xchen7	密码：Wdmm9916@
+此数据下载路径为	D:\\dataSource\\copernicus  下面的所有文件都属于
+
+
+sea_manage/passport 下的所有文件都是自动下载方法
+
+sea_manage/products/views_sentinel.py		哨兵1接口		D:\\dataSource\\webDown
+sea_manage/products/views_copernicus.py	哨兵2接口	下载地址	'D:\\dataSource\\webDown\\
+sea_manage/products/views_copernicus_down.py	哥白尼网站下载到本地后页面接口
+sea_manage/products/views_modis.py		modis	下载地址	D:\\dataSource\\\webDown
+sea_manage/products/views_tide.py           潮汐
+sea_manage/products/views_trend.py          潮流
+sea_manage/products/views_weather.py        预报
+D:\\dataSource\\webDown  下载地址为这个的时候 每次下载都会在后面添加年月日文件夹，加随机数文件夹。
+例如	D:\\dataSource\\webDown\\2022\08\22\\1215556649	此为完整的下载路径，批量下载的文件将会在此文件夹下面

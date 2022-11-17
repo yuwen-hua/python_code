@@ -1,0 +1,9 @@
+{
+  "dbname": "water_test",
+  "dirs": "D:\\dataSource\\test",
+  "MOGOHOST": "114.242.60.27",
+  "MOGOPORT": 6700,
+  "USAERNAME": "admin",
+  "PASSWORD": "123456"
+
+}

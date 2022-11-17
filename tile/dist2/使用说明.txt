@@ -1,0 +1,18 @@
+本文档为瓦片数据添加到MongoDB数据库说明
+
+程序受config.json文件中固定属性控制，修改时请修改属性值。
+
+config.json文件：
+1. dbname：将要添加到的数据库名称
+2. dirs：	需要添加的瓦片数据文件路径	注意：文件路径中不能出现汉字
+3. MOGOHOST：要添加的MongoDB数据库地址
+4. MOGOPORT：要添加的MongoDB数据库端口
+5. USAERNAME：要添加的MongoDB数据库用户名
+6. PASSWORD：要添加的MongoDB数据库密码
+
+
+
+注意事项：
+1. 若MongoDB数据库中没有设置用户名及密码，需将5、6两个属性删除、否则可能出现未知错误
+2. config.json必须与文件夹保持同级，否则程序会出现错误。
+3. 文件第二项dirs对应的值：文件的路径中不能出现汉字
